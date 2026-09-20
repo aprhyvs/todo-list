@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="../css/style.css">
     <script type="module" src="../js/index.js"></script>
 </head>
 <body>
@@ -11,5 +12,18 @@
     <select name="project" id="project-list">
         <!-- options appended from index.js-->
     </select>
+
+    <div class="todo" id="todo-list-wrapper">
+        <!-- list appended from index.js -->
+    </div>
+
+    <template id="todo-item">
+        <div class="todo__item">
+            <p class="todo__title"></p>
+            <p class="todo__desc"></p>
+            <p class="todo__due"></p>
+            <p class="todo__priority"></p>
+        </div>
+    </template>
 </body>
 </html>
