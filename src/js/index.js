@@ -1,7 +1,8 @@
 import "../css/style.css";
+import { initAddTodoForm } from "./addTodoForm.js";
 import { projectList, addTodo } from "./projectModule.js";
 
-let currentProject;
+export let currentProject;
 
 const currentProjectEl = document.getElementById("project");
 const projectListEl = document.getElementById("project-list");
@@ -67,8 +68,9 @@ function createTodoItem(todo) {
     return todoItem;
 }
 
-function renderTodoList(currentProjectParam) {
+export function renderTodoList(currentProjectParam) {
     const todoList = currentProjectParam.todoList;
+    todoWrapperEl.innerHTML = "";
 
     for (const todo of todoList) {
         console.log(todo)
@@ -76,4 +78,5 @@ function renderTodoList(currentProjectParam) {
     }
 }
 
-renderTodoList(currentProject)
+renderTodoList(currentProject);
+initAddTodoForm();
