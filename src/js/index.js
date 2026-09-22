@@ -5,10 +5,13 @@ let currentProject;
 
 const currentProjectEl = document.getElementById("project");
 const projectListEl = document.getElementById("project-list");
+const todoWrapperEl = document.getElementById("todo-list-wrapper");
 
 function setCurrentProject(projectIndex) {
     currentProject = projectList[projectIndex];
     currentProjectEl.textContent = currentProject.name;
+    todoWrapperEl.innerHTML = "";
+    renderTodoList(currentProject);
 }
 
 /**
@@ -32,33 +35,45 @@ addTodo(currentProject, "test", "desc", "today", true)
 addTodo(currentProject, "test2", "desc2", "today2", false)
 addTodo(currentProject, "test3", "desc3", "today3", true)
 
-const todoWrapperEl = document.getElementById("todo-list-wrapper");
-
-// code in appending todo items into todoWrapperEl
-const todoTemplate = document.getElementById("todo-item");
-const fragment = document.createDocumentFragment();
-
-/** 
- * render todoItem class from its currentProject
- * and append it on todoWrapperEl
- * @param {*} currentProjectParam 
+/**
+ * todoItem as an element for todoWrapperEl
+ * uses currentProject for renderTodoList()
+ * @param {*} todo 
+ * @returns 
  */
-function renderTodoItems(currentProjectParam) {
-    const todoList = currentProjectParam.todoList
+function createTodoItem(todo) {
+    const todoItem = document.createElement("div");
+    const title = document.createElement("h3");
+    const desc = document.createElement("p");
+    const due = document.createElement("p");
+    const priority = document.createElement("p");    
+
+    todoItem.classList.add("todo");
+    title.classList.add("todo__title");
+    desc.classList.add("todo__desc");
+    due.classList.add("todo__due");
+    priority.classList.add("todo__priority");
+
+    title.textContent = todo.title
+    desc.textContent = todo.description
+    due.textContent = todo.dueDate
+    priority.textContent = todo.priority
+
+    todoItem.appendChild(title);
+    todoItem.appendChild(desc);
+    todoItem.appendChild(due);
+    todoItem.appendChild(priority);
+
+    return todoItem;
+}
+
+function renderTodoList(currentProjectParam) {
+    const todoList = currentProjectParam.todoList;
 
     for (const todo of todoList) {
         console.log(todo)
-        const clone = todoTemplate.content.cloneNode(true)
-
-        clone.querySelector(".todo__title").textContent = todo.title
-        clone.querySelector(".todo__desc").textContent = todo.description
-        clone.querySelector(".todo__due").textContent = todo.dueDate
-        clone.querySelector(".todo__priority").textContent = todo.priority
-
-        fragment.appendChild(clone)
+        todoWrapperEl.appendChild(createTodoItem(todo))
     }
-
-    todoWrapperEl.appendChild(fragment)
 }
 
-renderTodoItems(currentProject)
+renderTodoList(currentProject)
