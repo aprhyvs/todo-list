@@ -13,6 +13,7 @@ function setCurrentProject(projectIndex) {
     currentProjectEl.textContent = currentProject.name;
     todoWrapperEl.innerHTML = "";
     renderTodoList(currentProject);
+    initTodoBtn();
 }
 
 /**
@@ -47,25 +48,58 @@ function createTodoItem(todo) {
     const title = document.createElement("h3");
     const desc = document.createElement("p");
     const due = document.createElement("p");
-    const priority = document.createElement("p");    
+    const priority = document.createElement("p");
+    const deleteBtn = document.createElement("button");
+    const completeBtn = document.createElement("button");
 
     todoItem.classList.add("todo");
+    todoItem.setAttribute("id", todo.id);
+
     title.classList.add("todo__title");
     desc.classList.add("todo__desc");
     due.classList.add("todo__due");
     priority.classList.add("todo__priority");
 
-    title.textContent = todo.title
-    desc.textContent = todo.description
-    due.textContent = todo.dueDate
-    priority.textContent = todo.priority
+    deleteBtn.classList.add("todo__action");
+    deleteBtn.setAttribute("data-action", "delete-todo");
+
+    completeBtn.classList.add("todo__action");
+    completeBtn.setAttribute("data-action", "complete-todo");
+
+    title.textContent = todo.title;
+    desc.textContent = todo.description;
+    due.textContent = todo.dueDate;
+    priority.textContent = todo.priority;
+    deleteBtn.textContent = "Delete Todo";
+    completeBtn.textContent = "Mark as done";
 
     todoItem.appendChild(title);
     todoItem.appendChild(desc);
     todoItem.appendChild(due);
     todoItem.appendChild(priority);
+    todoItem.appendChild(deleteBtn);
+    todoItem.appendChild(completeBtn);
 
     return todoItem;
+}
+
+function initTodoBtn() {
+    const todoItemElList = document.querySelectorAll(".todo");
+
+    todoItemElList.forEach((element) => {
+        element.addEventListener("click", (event) => {
+            const actionSelected = event.target.dataset.action;
+            const getTodoId = event.target.parentNode.getAttribute("id");
+
+            if (actionSelected === "delete-todo") {
+                console.log(`delete-todo: ${getTodoId}`);
+            }
+
+            if (actionSelected === "complete-todo") {
+                console.log(`complete-todo: ${getTodoId}`);
+            }
+        });
+    })
 }
 
 export function renderTodoList(currentProjectParam) {
@@ -79,4 +113,5 @@ export function renderTodoList(currentProjectParam) {
 }
 
 renderTodoList(currentProject);
+initTodoBtn()
 initAddTodoForm();
