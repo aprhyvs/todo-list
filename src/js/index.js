@@ -83,24 +83,35 @@ function createTodoItem(todo) {
     return todoItem;
 }
 
+
 function initTodoBtn() {
     const todoItemElList = document.querySelectorAll(".todo");
 
     todoItemElList.forEach((element) => {
         element.addEventListener("click", (event) => {
             const actionSelected = event.target.dataset.action;
+            const getTodoEl = event.target.parentNode;
             const getTodoId = event.target.parentNode.getAttribute("id");
+            const getTodoIndex = currentProject.todoList.findIndex((e) => e.id === getTodoId);
 
             if (actionSelected === "delete-todo") {
-                console.log(`delete-todo: ${getTodoId}`);
+                deleteTodo(getTodoEl, getTodoIndex);
             }
 
             if (actionSelected === "complete-todo") {
                 console.log(`complete-todo: ${getTodoId}`);
             }
         });
-    })
+    });
 }
+
+function deleteTodo(element, getTodoIndex) {
+    element.remove();
+
+    const currentTodoList = currentProject.todoList 
+
+    currentTodoList.splice(getTodoIndex, 1)
+};
 
 export function renderTodoList(currentProjectParam) {
     const todoList = currentProjectParam.todoList;
