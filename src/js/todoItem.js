@@ -1,3 +1,5 @@
+import { currentProject } from "./index.js";
+
 export class Todo {
     constructor(title, description, dueDate, priority) {
         this.id = crypto.randomUUID();
@@ -7,4 +9,16 @@ export class Todo {
         this.priority = priority;
         this.done = false;
     }
+
+    doneTodo() {
+        this.done = !this.done;
+    }
 }
+
+export function deleteTodo(element, getTodoIndex) {
+    element.remove();
+
+    const currentTodoList = currentProject.todoList 
+
+    currentTodoList.splice(getTodoIndex, 1)
+};
