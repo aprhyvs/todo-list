@@ -33,12 +33,13 @@ export function initAddTodoForm() {
         if (desc === "") { 
             addTodo(currentProject, title, "Description not added.", dueDate, priority)
             renderTodoList(currentProject);
+            addTodoModalEl.close();
             return;
         }
 
         addTodo(currentProject, title, desc, dueDate, priority)
-        console.log(dueDate)
         renderTodoList(currentProject);
         addTodoModalEl.close();
+        return;
     });
 }

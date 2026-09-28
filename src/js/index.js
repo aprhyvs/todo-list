@@ -1,4 +1,7 @@
+import "../css/reset.css";
 import "../css/style.css";
+import "../css/modal.css";
+import "../css/form.css";
 import { initAddTodoForm } from "./addTodoForm.js";
 import { projectList, addTodo } from "./projectModule.js";
 import { deleteTodo } from "./todoItem.js";
