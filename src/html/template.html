@@ -8,6 +8,9 @@
 </head>
 <body>
     <h1 id="project"></h1>
+    <button id="open-add-todo-btn">
+        Add Modal
+    </button>
     <select name="project" id="project-list">
         <!-- options appended from index.js-->
     </select>
@@ -16,22 +19,28 @@
         <!-- list appended from index.js -->
     </div>
 
-    <form id="add_todo_form">
-        <h3>Add Todo</h3>
+    <dialog id="add-todo-modal">
+        <div class="modal__header">
+            <h3>Add Todo</h3>
+            <button id="close-add-todo-btn">
+                X
+            </button>
+        </div>
+        <form id="add_todo_form">
+            <label for="todo_title">Title</label>
+            <input type="text" id="todo_title" name="todo_title"></input>
 
-        <label for="todo_title">Title</label>
-        <input type="text" id="todo_title" name="todo_title"></input>
+            <label for="todo_description">Description</label>
+            <textarea id="todo_description" name="todo_description"></textarea>
 
-        <label for="todo_description">Description</label>
-        <textarea id="todo_description" name="todo_description"></textarea>
+            <label for="todo_due_date">Due Date</label>
+            <input type="date" id="todo_due_date" name="todo_due_date"></input>
 
-        <label for="todo_due_date">Due Date</label>
-        <input type="text" id="todo_due_date" name="todo_due_date"></input>
+            <label for="todo_priority">Priority</label>
+            <input type="checkbox" id="todo_priority" name="todo_priority"></input>
 
-        <label for="todo_priority">Priority</label>
-        <input type="checkbox" id="todo_priority" name="todo_priority"></input>
-
-        <button type="submit">Add Todo</button>
-    </form>
+            <button type="submit">Add Todo</button>
+        </form>
+    </dialog>
 </body>
 </html>

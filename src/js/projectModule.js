@@ -26,11 +26,3 @@ export function addTodo(
 
 addProject("nuts")
 addProject("joe")
-
-// projectList.forEach(project => {
-//     console.log(project)
-// });
-
-// console.log(projectList[0].id)
-// refactor soon to use crypto.randomUUID to find the project of the todo to be added
-// const projectIndex = projectList.findIndex((project) => project.name == "joe")

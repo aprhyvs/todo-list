@@ -2,8 +2,18 @@ import { addTodo } from "./projectModule.js";
 import { currentProject, renderTodoList } from "./index.js";
 
 export function initAddTodoForm() {
+    const openAddTodoModalBtn = document.getElementById("open-add-todo-btn");
+    const closeAddTodoModalBtn = document.getElementById("close-add-todo-btn");
+    const addTodoModalEl = document.getElementById("add-todo-modal");
     const addTodoFormEl = document.getElementById("add_todo_form");
-    console.log(addTodoFormEl);
+
+    openAddTodoModalBtn.addEventListener("click", () => {
+        addTodoModalEl.showModal();
+    });
+
+    closeAddTodoModalBtn.addEventListener("click", () => {
+        addTodoModalEl.close();
+    })
 
     addTodoFormEl.addEventListener("submit", (event) => {
         event.preventDefault();
@@ -27,6 +37,8 @@ export function initAddTodoForm() {
         }
 
         addTodo(currentProject, title, desc, dueDate, priority)
+        console.log(dueDate)
         renderTodoList(currentProject);
+        addTodoModalEl.close();
     });
 }

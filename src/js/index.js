@@ -14,7 +14,6 @@ function setCurrentProject(projectIndex) {
     currentProjectEl.textContent = currentProject.name;
     todoWrapperEl.innerHTML = "";
     renderTodoList(currentProject);
-    initTodoBtn();
 }
 
 /**
@@ -32,11 +31,6 @@ projectListEl.addEventListener("change", () => {
     setCurrentProject(projectListEl.selectedIndex);
 });
 
-setCurrentProject(0);
-
-addTodo(currentProject, "test", "desc", "today", true)
-addTodo(currentProject, "test2", "desc2", "today2", false)
-addTodo(currentProject, "test3", "desc3", "today3", true)
 
 /**
  * todoItem as an element for todoWrapperEl
@@ -108,7 +102,6 @@ function initTodoBtn() {
             if (actionSelected === "complete-todo") {
                 getTodo.doneTodo();
                 renderTodoList(currentProject);
-                initTodoBtn(); // i am not sure if this is a good idea...
             }
         });
     });
@@ -122,8 +115,15 @@ export function renderTodoList(currentProjectParam) {
         console.log(todo)
         todoWrapperEl.appendChild(createTodoItem(todo))
     }
+
+    initTodoBtn()
 }
 
+setCurrentProject(0);
+
+addTodo(currentProject, "test", "desc", "today", true)
+addTodo(currentProject, "test2", "desc2", "today2", false)
+addTodo(currentProject, "test3", "desc3", "today3", true)
+
 renderTodoList(currentProject);
-initTodoBtn()
 initAddTodoForm();
