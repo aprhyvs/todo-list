@@ -1,0 +1,21 @@
+.shell {
+    display: grid;
+    grid-template-columns: 192px 1fr;
+    grid-template-areas: 
+    "header header"
+    "sidebar content";
+}
+
+.header {
+    grid-area: header;
+    background-color: green;
+}
+
+.aside {
+    grid-area: sidebar;
+
+}
+
+.content {
+    grid-area: content;
+}
