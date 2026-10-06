@@ -1,4 +1,5 @@
 import "../css/reset.css";
+import "../font/font.css";
 import "../css/shell.css";
 import "../css/style.css";
 import "../css/modal.css";

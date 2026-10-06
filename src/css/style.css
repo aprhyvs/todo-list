@@ -1,3 +1,8 @@
+body {
+    font-family: "IBM Plex Sans Var";
+    font-weight: 400;
+}
+
 .todo {
     border: 1px solid green;
 }
