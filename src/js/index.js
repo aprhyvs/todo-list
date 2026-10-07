@@ -7,36 +7,18 @@ import "../css/form.css";
 import { initAddTodoForm } from "./addTodoForm.js";
 import { projectList, addTodo } from "./projectModule.js";
 import { deleteTodo } from "./todoItem.js";
+import { initSidebarProjectList, initSidebarProjectListBtn } from "./sidebar.js";
 
 export let currentProject;
 
 const currentProjectEl = document.getElementById("project");
 const todoWrapperEl = document.getElementById("todo-list-wrapper");
 
-function setCurrentProject(projectIndex) {
+export function setCurrentProject(projectIndex) {
     currentProject = projectList[projectIndex];
     currentProjectEl.textContent = currentProject.name;
     todoWrapperEl.innerHTML = "";
     renderTodoList(currentProject);
-}
-
-/**
- * append projectList from ProjectModule.js 
- * option elements with names and id
- */
-function initProjectList() {
-    const projectListEl = document.getElementById("project-list");
-
-    projectList.forEach((e) => {
-        const projectListOption = document.createElement("option")
-        projectListOption.textContent = e.name
-
-        projectListEl.appendChild(projectListOption)
-    });
-
-    projectListEl.addEventListener("change", () => {
-        setCurrentProject(projectListEl.selectedIndex);
-    });
 }
 
 /**
@@ -133,5 +115,6 @@ addTodo(currentProject, "test2", "desc2", "today2", false)
 addTodo(currentProject, "test3", "desc3", "today3", true)
 
 renderTodoList(currentProject);
-initProjectList();
 initAddTodoForm();
+initSidebarProjectList();
+initSidebarProjectListBtn();
