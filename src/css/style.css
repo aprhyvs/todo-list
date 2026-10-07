@@ -3,6 +3,6 @@ body {
     font-weight: 400;
 }
 
-.todo {
-    border: 1px solid green;
+select {
+    height: fit-content;
 }

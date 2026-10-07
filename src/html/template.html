@@ -7,21 +7,23 @@
 </head>
 <body>
     <div class="shell">
-        <header class="header">
-            Header
-        </header>
         <aside class="sidebar">
             <p>Todo List</p>
         </aside>
         <main class="content">
-            <h1 id="project"></h1>
-            <button class="button" id="open-add-todo-btn">
-                Add Modal
-            </button>
+            <header class="header">
+                <h1 id="project"></h1>
 
-            <select name="project" id="project-list">
-                <!-- options appended from index.js-->
-            </select>
+                <div class="header__actions">
+                    <button class="button" id="open-add-todo-btn">
+                        Add Modal
+                    </button>
+
+                    <select name="project" id="project-list">
+                        <!-- options appended from index.js-->
+                    </select>
+                </div>
+            </header>
 
             <div class="todo-wrapper" id="todo-list-wrapper">
                 <!-- list appended from index.js -->

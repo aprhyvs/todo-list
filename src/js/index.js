@@ -11,7 +11,6 @@ import { deleteTodo } from "./todoItem.js";
 export let currentProject;
 
 const currentProjectEl = document.getElementById("project");
-const projectListEl = document.getElementById("project-list");
 const todoWrapperEl = document.getElementById("todo-list-wrapper");
 
 function setCurrentProject(projectIndex) {
@@ -25,17 +24,20 @@ function setCurrentProject(projectIndex) {
  * append projectList from ProjectModule.js 
  * option elements with names and id
  */
-projectList.forEach((e) => {
-    const projectListOption = document.createElement("option")
-    projectListOption.textContent = e.name
+function initProjectList() {
+    const projectListEl = document.getElementById("project-list");
 
-    projectListEl.appendChild(projectListOption)
-});
+    projectList.forEach((e) => {
+        const projectListOption = document.createElement("option")
+        projectListOption.textContent = e.name
 
-projectListEl.addEventListener("change", () => {
-    setCurrentProject(projectListEl.selectedIndex);
-});
+        projectListEl.appendChild(projectListOption)
+    });
 
+    projectListEl.addEventListener("change", () => {
+        setCurrentProject(projectListEl.selectedIndex);
+    });
+}
 
 /**
  * todoItem as an element for todoWrapperEl
@@ -131,4 +133,5 @@ addTodo(currentProject, "test2", "desc2", "today2", false)
 addTodo(currentProject, "test3", "desc3", "today3", true)
 
 renderTodoList(currentProject);
+initProjectList();
 initAddTodoForm();
