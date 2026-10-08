@@ -1,0 +1,17 @@
+.todo {
+    display: flex;
+    gap: 1rem;
+    align-items: start;
+}
+
+.todo__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    flex: 1 1 100%
+}
+
+.todo__detail {
+    display: flex;
+    flex-direction: column;
+}

@@ -5,6 +5,7 @@ import "../css/style.css";
 import "../css/modal.css";
 import "../css/form.css";
 import "../css/sidebar.css";
+import "../css/todo.css";
 import { initAddTodoForm } from "./addTodoForm.js";
 import { projectList, addTodo } from "./projectModule.js";
 import { deleteTodo, createTodoElement, initTodoBtn } from "./todoItem.js";
@@ -36,9 +37,9 @@ export function renderTodoList(currentProjectParam) {
 
 setCurrentProject(0);
 
-addTodo(currentProject, "test", "desc", "today", true)
-addTodo(currentProject, "test2", "desc2", "today2", false)
-addTodo(currentProject, "test3", "desc3", "today3", true)
+addTodo(currentProject, "Clean up code", "The codebase is a mess!", "11/02/2028", true)
+addTodo(currentProject, "Wake up early", "Go to bed NOW", "10/09/2026", false)
+addTodo(currentProject, "Go home early", "Preferrably at 6PM.", "10/10/2026", true)
 
 renderTodoList(currentProject);
 initAddTodoForm();
