@@ -12,8 +12,8 @@ export function initSidebarProjectList() {
         const projectListOption = document.createElement("li");
         const projectListOptionBtn = document.createElement("a");
 
-        projectListOptionBtn.textContent = e.name;
         projectListOptionBtn.setAttribute("data-id", e.id);
+        projectListOptionBtn.textContent = e.name;
 
         projectListEl.appendChild(projectListOption);
         projectListOption.appendChild(projectListOptionBtn)
@@ -36,7 +36,7 @@ export function initSidebarProjectListBtn() {
                 return;
             }
 
-            setCurrentProject(getProjectIndex);
+            setCurrentProject(getProjectIndex)
         }
     });
 }
