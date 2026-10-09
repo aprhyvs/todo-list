@@ -16,7 +16,7 @@ export class Todo {
 }
 
 export function deleteTodo(element, getTodoIndex) {
-    element.parentNode.remove(); // .todo
+    element.remove(); // .todo
 
     const currentTodoList = currentProject.todoList 
 
@@ -30,14 +30,14 @@ export function deleteTodo(element, getTodoIndex) {
  * @returns 
  */
 export function createTodoElement(todo) {
-    const todoItem = document.createElement("div");
-    todoItem.classList.add("todo");
-    todoItem.setAttribute("id", todo.id);
+    const todoEl = document.createElement("div");
+    todoEl.classList.add("todo");
+    todoEl.setAttribute("id", todo.id);
 
-    todoItem.appendChild(createCompleteTodoBtn(todo));
-    todoItem.appendChild(createTodoElementContent(todo));
+    todoEl.appendChild(createCompleteTodoBtn(todo));
+    todoEl.appendChild(createTodoElementContent(todo));
 
-    return todoItem;
+    return todoEl;
 }
 
 function createCompleteTodoBtn(todo) {
@@ -63,11 +63,11 @@ function createDeleteTodoBtn() {
 }
 
 function createTodoElementContent(todo) {
-    const todoItemContent = document.createElement("div");
-    todoItemContent.classList.add("todo__content")
+    const todoElContent = document.createElement("div");
+    todoElContent.classList.add("todo__content")
 
-        const todoItemDetailWrapper = document.createElement("div");
-        todoItemDetailWrapper.classList.add("todo__detail")
+        const todoElDetailWrapper = document.createElement("div");
+        todoElDetailWrapper.classList.add("todo__detail")
 
             const details = document.createElement("details")
             details.textContent = todo.description;
@@ -80,30 +80,35 @@ function createTodoElementContent(todo) {
 
             details.appendChild(title);
 
-        todoItemDetailWrapper.appendChild(details)
-        todoItemDetailWrapper.appendChild(due)
+        todoElDetailWrapper.appendChild(details)
+        todoElDetailWrapper.appendChild(due)
 
-    todoItemContent.appendChild(todoItemDetailWrapper)
-    todoItemContent.appendChild(createDeleteTodoBtn());
+        const todoElActions = document.createElement("div");
+        todoElActions.classList.add("todo__actions");
 
-    return todoItemContent
+        todoElActions.appendChild(createDeleteTodoBtn())
+
+    todoElContent.appendChild(todoElDetailWrapper)
+    todoElContent.appendChild(todoElActions);
+
+    return todoElContent
 }
 
 export function initTodoBtn() {
-    const todoItemElList = document.querySelectorAll(".todo");
+    const todoElList = document.querySelectorAll(".todo");
 
-    todoItemElList.forEach((element) => {
+    todoElList.forEach((element) => {
         element.addEventListener("click", (event) => {
             const actionSelected = event.target.dataset.action;
+            const getTodoEl = event.target.closest(".todo");
 
-            const getTodoEl = event.target.parentNode; //returns .todo__content
-            const getTodoIndex = currentProject.todoList.findIndex((e) => e.id === getTodoEl.getAttribute("id"));
             if (actionSelected === "delete-todo") {
+                const getTodoIndex = currentProject.todoList.findIndex((e) => e.id === getTodoEl.getAttribute("id"));
                 deleteTodo(getTodoEl, getTodoIndex);
             }
 
-            const getTodo = currentProject.todoList.find((e) => e.id === getTodoEl.getAttribute("id"));
             if (actionSelected === "complete-todo") {
+                const getTodo = currentProject.todoList.find((e) => e.id === getTodoEl.getAttribute("id"));
                 getTodo.doneTodo();
                 renderTodoList(currentProject);
             }
