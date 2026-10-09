@@ -53,6 +53,15 @@ function createCompleteTodoBtn(todo) {
     return completeBtn
 }
 
+function createPriorityTodoBtn() {
+    const priorityBtn = document.createElement("button");
+    priorityBtn.textContent = "Change Priority";
+    priorityBtn.classList.add("todo__action");
+    priorityBtn.setAttribute("data-action", "change-priority");
+
+    return priorityBtn
+}
+
 function createDeleteTodoBtn() {
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "Delete Todo";
@@ -87,6 +96,7 @@ function createTodoElementContent(todo) {
         todoElActions.classList.add("todo__actions");
 
         todoElActions.appendChild(createDeleteTodoBtn())
+        todoElActions.appendChild(createPriorityTodoBtn())
 
     todoElContent.appendChild(todoElDetailWrapper)
     todoElContent.appendChild(todoElActions);
@@ -102,15 +112,19 @@ export function initTodoBtn() {
             const actionSelected = event.target.dataset.action;
             const getTodoEl = event.target.closest(".todo");
 
+            if (actionSelected === "complete-todo") {
+                const getTodo = currentProject.todoList.find((e) => e.id === getTodoEl.getAttribute("id"));
+                getTodo.doneTodo();
+                renderTodoList(currentProject);
+            }
+
             if (actionSelected === "delete-todo") {
                 const getTodoIndex = currentProject.todoList.findIndex((e) => e.id === getTodoEl.getAttribute("id"));
                 deleteTodo(getTodoEl, getTodoIndex);
             }
 
-            if (actionSelected === "complete-todo") {
-                const getTodo = currentProject.todoList.find((e) => e.id === getTodoEl.getAttribute("id"));
-                getTodo.doneTodo();
-                renderTodoList(currentProject);
+            if (actionSelected === "change-priority") {
+                console.log(getTodoEl)
             }
         });
     });
