@@ -1,40 +1,23 @@
-.priority {
-    margin: 0;
-    inset: auto;
-    position-area: bottom right;
-    border: 1px solid black;
-    margin: 0.5rem;
-}
+ .priority {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: grid;
+    z-index: 100;
+ }
 
-.priority__choices {
-    display: inline-flex;
-    gap: 1rem;
-}
-
-.priority__level {
-    all: unset;
-    background-color: green;
-    padding: 3px;
-    border: 1px solid grey;
-}
-
-.priority__level:hover {
-    background-color: red;
-}
-
-
-.priority__level--zero {
+[data-priority="0"] {
     color: black;
 }
 
-.priority__level--one {
+[data-priority="1"] {
     color: blue;
 }
 
-.priority__level--two {
-    color: yellow;
+[data-priority="2"] {
+    color: orange;
 }
 
-.priority__level--three {
+[data-priority="3"] {
     color: red;
 }

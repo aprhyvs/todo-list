@@ -37,6 +37,7 @@ export function createTodoElement(todo) {
     const todoEl = document.createElement("div");
     todoEl.classList.add("todo");
     todoEl.setAttribute("id", todo.id);
+    todoEl.setAttribute("data-prioritylist", "closed")
 
     todoEl.appendChild(createCompleteTodoBtn(todo));
     todoEl.appendChild(createTodoElementContent(todo));
@@ -61,8 +62,7 @@ function createPriorityTodoBtn() {
     const priorityBtn = document.createElement("button");
     priorityBtn.textContent = "Change Priority";
     priorityBtn.classList.add("todo__action");
-    // priorityBtn.setAttribute("data-action", "change-priority");
-    priorityBtn.setAttribute("popovertarget", "priority-menu");
+    priorityBtn.setAttribute("data-action", "open-change-priority");
 
     return priorityBtn
 }
@@ -109,6 +109,38 @@ function createTodoElementContent(todo) {
     return todoElContent
 }
 
+function createPriorityChoiceList () {
+    const wrapper = document.createElement("div")
+    wrapper.classList.add("priority")
+
+    wrapper.appendChild(createPriorityChoices(0))
+    wrapper.appendChild(createPriorityChoices(1))
+    wrapper.appendChild(createPriorityChoices(2))
+    wrapper.appendChild(createPriorityChoices(3))
+
+    return wrapper
+}
+
+function createPriorityChoices(priority) {
+    const button = document.createElement("button");
+    button.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M200-120v-680h360l16 80h224v400H520l-16-80H280v280h-80Zm300-440Zm86 160h134v-240H510l-16-80H280v240h290l16 80Z"/></svg>
+    `
+    button.setAttribute("data-priority", priority);
+
+    return button
+}
+
+function initPriorityChoiceBtn() {
+    const getTodoEl = event.target.closest(".todo");
+
+    if(event.target.tagName === "BUTTON") {
+        const getTodo = currentProject.todoList.find((e) => e.id === getTodoEl.getAttribute("id"));
+        getTodo.changePriority(event.target.dataset.priority)
+        renderTodoList(currentProject);
+    }
+}
+
 export function initTodoBtn() {
     const todoElList = document.querySelectorAll(".todo");
 
@@ -127,23 +159,33 @@ export function initTodoBtn() {
                 const getTodoIndex = currentProject.todoList.findIndex((e) => e.id === getTodoEl.getAttribute("id"));
                 deleteTodo(getTodoEl, getTodoIndex);
             }
+
+            if (actionSelected === "open-change-priority") {
+                const priorityListToOpen = getTodoEl.dataset.prioritylist;
+
+                if (priorityListToOpen === "closed") {
+                    /**
+                     * stores the last open .priority
+                     * returns null if nothing is open
+                     */
+                    const openPriority = document.querySelector(".priority");
+
+                    if (openPriority) {
+                        openPriority.closest(".todo").dataset.prioritylist = "closed";
+                        openPriority.remove();
+                    }
+
+                    getTodoEl.dataset.prioritylist = "open"
+                    getTodoEl.appendChild(createPriorityChoiceList())
+                    getTodoEl.querySelector(".priority").addEventListener("click", initPriorityChoiceBtn)
+                } 
+
+                if (priorityListToOpen === "open") {
+                    getTodoEl.dataset.prioritylist = "closed"
+                    getTodoEl.querySelector(".priority").removeEventListener("click", initPriorityChoiceBtn)
+                    getTodoEl.querySelector(".priority").remove()
+                }
+            }
         });
     });
-}
-
-export function initPriorityChange() {
-    const priorityMenu = document.getElementById("priority-menu")
-
-    // Source - https://stackoverflow.com/a/47330239
-    // Posted by Karol Grabowski, modified by community. See post 'Timeline' for change history
-    // Retrieved 2026-10-14, License - CC BY-SA 4.0
-    if (!priorityMenu.hasAttribute("listener")) {
-        priorityMenu.addEventListener("click", (event) => {
-            if (event.target.dataset.action === "change-priority") {
-                console.log(event.target)
-            }
-        })
-    }
-
-    priorityMenu.setAttribute("listener", "true");
 }
