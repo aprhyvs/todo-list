@@ -1,0 +1,40 @@
+.priority {
+    margin: 0;
+    inset: auto;
+    position-area: bottom right;
+    border: 1px solid black;
+    margin: 0.5rem;
+}
+
+.priority__choices {
+    display: inline-flex;
+    gap: 1rem;
+}
+
+.priority__level {
+    all: unset;
+    background-color: green;
+    padding: 3px;
+    border: 1px solid grey;
+}
+
+.priority__level:hover {
+    background-color: red;
+}
+
+
+.priority__level--zero {
+    color: black;
+}
+
+.priority__level--one {
+    color: blue;
+}
+
+.priority__level--two {
+    color: yellow;
+}
+
+.priority__level--three {
+    color: red;
+}

@@ -6,9 +6,10 @@ import "../css/modal.css";
 import "../css/form.css";
 import "../css/sidebar.css";
 import "../css/todo.css";
+import "../css/priority.css";
 import { initAddTodoForm } from "./addTodoForm.js";
 import { projectList, addTodo } from "./projectModule.js";
-import { deleteTodo, createTodoElement, initTodoBtn } from "./todoItem.js";
+import { deleteTodo, createTodoElement, initTodoBtn, initPriorityChange } from "./todoItem.js";
 import { initSidebarProjectList, initSidebarProjectListBtn } from "./sidebar.js";
 
 export let currentProject;
@@ -23,16 +24,22 @@ export function setCurrentProject(projectIndex) {
     renderTodoList(currentProject);
 }
 
+// issue: this is called twice on page load,
+//        hence event listeners for initPriorityChange
+//        is added twice. i only added a check if
+//        the element has no attribute: add the listener
+//        if it has a listener, don't add it again.
 export function renderTodoList(currentProjectParam) {
     const todoList = currentProjectParam.todoList;
     todoWrapperEl.innerHTML = "";
 
     for (const todo of todoList) {
-        console.log(todo)
-        todoWrapperEl.appendChild(createTodoElement(todo))
+        // console.log(todo);
+        todoWrapperEl.appendChild(createTodoElement(todo));
     }
 
-    initTodoBtn()
+    initTodoBtn();
+    initPriorityChange();
 }
 
 setCurrentProject(0);

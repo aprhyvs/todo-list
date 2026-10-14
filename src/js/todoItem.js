@@ -13,6 +13,10 @@ export class Todo {
     doneTodo() {
         this.done = !this.done;
     }
+
+    changePriority(priority) {
+        this.priority = priority;
+    }
 }
 
 export function deleteTodo(element, getTodoIndex) {
@@ -57,7 +61,8 @@ function createPriorityTodoBtn() {
     const priorityBtn = document.createElement("button");
     priorityBtn.textContent = "Change Priority";
     priorityBtn.classList.add("todo__action");
-    priorityBtn.setAttribute("data-action", "change-priority");
+    // priorityBtn.setAttribute("data-action", "change-priority");
+    priorityBtn.setAttribute("popovertarget", "priority-menu");
 
     return priorityBtn
 }
@@ -122,10 +127,23 @@ export function initTodoBtn() {
                 const getTodoIndex = currentProject.todoList.findIndex((e) => e.id === getTodoEl.getAttribute("id"));
                 deleteTodo(getTodoEl, getTodoIndex);
             }
-
-            if (actionSelected === "change-priority") {
-                console.log(getTodoEl)
-            }
         });
     });
+}
+
+export function initPriorityChange() {
+    const priorityMenu = document.getElementById("priority-menu")
+
+    // Source - https://stackoverflow.com/a/47330239
+    // Posted by Karol Grabowski, modified by community. See post 'Timeline' for change history
+    // Retrieved 2026-10-14, License - CC BY-SA 4.0
+    if (!priorityMenu.hasAttribute("listener")) {
+        priorityMenu.addEventListener("click", (event) => {
+            if (event.target.dataset.action === "change-priority") {
+                console.log(event.target)
+            }
+        })
+    }
+
+    priorityMenu.setAttribute("listener", "true");
 }
