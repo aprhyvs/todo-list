@@ -1,10 +1,10 @@
- .priority {
+.priority {
     position: absolute;
     top: 0;
     right: 0;
     display: grid;
     z-index: 100;
- }
+}
 
 [data-priority="0"] {
     color: black;

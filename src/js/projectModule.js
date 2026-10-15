@@ -8,21 +8,21 @@ class Project {
         this.name = name;
         this.todoList = []
     }
+
+    addTodo(
+        title,
+        description,
+        dueDate,
+        priority = 0,        
+    ) {
+        this.todoList.push(new Todo(title, description, dueDate, priority));
+    }
 }
 
 function addProject(name) {
     projectList.push(new Project(name));
 }
 
-export function addTodo(
-    projectName,
-    title,
-    description,
-    dueDate,
-    priority
-) { 
-    projectName.todoList.push(new Todo(title, description, dueDate, priority))
-}
-
+addProject("default")
 addProject("nuts")
 addProject("joe")

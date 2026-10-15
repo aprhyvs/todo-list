@@ -1,4 +1,3 @@
-import { addTodo } from "./projectModule.js";
 import { currentProject, renderTodoList } from "./index.js";
 
 export function initAddTodoForm() {
@@ -31,13 +30,13 @@ export function initAddTodoForm() {
         }
 
         if (desc === "") { 
-            addTodo(currentProject, title, "Description not added.", dueDate, priority)
+            currentProject.addTodo(title, "Description not added.", dueDate, priority)
             renderTodoList(currentProject);
             addTodoModalEl.close();
             return;
         }
 
-        addTodo(currentProject, title, desc, dueDate, priority)
+        currentProject.addTodo(title, desc, dueDate, priority)
         renderTodoList(currentProject);
         addTodoModalEl.close();
         return;
