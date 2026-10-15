@@ -23,6 +23,6 @@ function addProject(name) {
     projectList.push(new Project(name));
 }
 
-addProject("default")
+addProject("Home")
 addProject("nuts")
 addProject("joe")

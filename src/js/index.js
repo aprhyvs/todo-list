@@ -38,9 +38,9 @@ export function renderTodoList(currentProjectParam) {
 
 setCurrentProject(0);
 
-currentProject.addTodo("Clean up code", "The codebase is a mess!", "11/02/2028", "0")
-currentProject.addTodo("Wake up early", "Go to bed NOW", "10/09/2026", "0")
-currentProject.addTodo("Go home early", "Preferrably at 6PM.", "10/10/2026", "0")
+currentProject.addTodo("Clean up code", "The codebase is a mess!", "11/02/2028", "0");
+currentProject.addTodo("Wake up early", "Go to bed NOW", "10/09/2026", "0");
+currentProject.addTodo("Go home early", "Preferrably at 6PM.", "10/10/2026", "0");
 
 renderTodoList(currentProject);
 initAddTodoForm();

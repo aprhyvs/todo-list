@@ -1,3 +1,4 @@
+import { find } from "neo-async";
 import { currentProject, renderTodoList } from "./index.js";
 
 export class Todo {
@@ -22,9 +23,9 @@ export class Todo {
 export function deleteTodo(element, getTodoIndex) {
     element.remove(); // .todo
 
-    const currentTodoList = currentProject.todoList 
+    const currentTodoList = currentProject.todoList;
 
-    currentTodoList.splice(getTodoIndex, 1)
+    currentTodoList.splice(getTodoIndex, 1);
 };
 
 /**
@@ -37,7 +38,7 @@ export function createTodoElement(todo) {
     const todoEl = document.createElement("div");
     todoEl.classList.add("todo");
     todoEl.setAttribute("id", todo.id);
-    todoEl.setAttribute("data-prioritylist", "closed")
+    todoEl.setAttribute("data-prioritylist", "closed");
 
     todoEl.appendChild(createCompleteTodoBtn(todo));
     todoEl.appendChild(createTodoElementContent(todo));
@@ -55,16 +56,16 @@ function createCompleteTodoBtn(todo) {
     completeBtn.checked = true : 
     completeBtn.checked = false);
 
-    return completeBtn
+    return completeBtn;
 }
 
-function createPriorityTodoBtn() {
-    const priorityBtn = document.createElement("button");
-    priorityBtn.textContent = "Change Priority";
-    priorityBtn.classList.add("todo__action");
-    priorityBtn.setAttribute("data-action", "open-change-priority");
+function createEditTodoBtn() {
+    const editBtn = document.createElement("button");
+    editBtn.textContent = "Edit Todo";
+    editBtn.classList.add("todo__action");
+    editBtn.setAttribute("data-action", "edit-todo");
 
-    return priorityBtn
+    return editBtn;
 }
 
 function createDeleteTodoBtn() {
@@ -73,52 +74,65 @@ function createDeleteTodoBtn() {
     deleteBtn.classList.add("todo__action");
     deleteBtn.setAttribute("data-action", "delete-todo");
 
-    return deleteBtn
+    return deleteBtn;
+}
+
+function createPriorityTodoBtn() {
+    const priorityBtn = document.createElement("button");
+    priorityBtn.textContent = "Change Priority";
+    priorityBtn.classList.add("todo__action");
+    priorityBtn.setAttribute("data-action", "open-change-priority");
+
+    return priorityBtn;
 }
 
 function createTodoElementContent(todo) {
     const todoElContent = document.createElement("div");
-    todoElContent.classList.add("todo__content")
+    todoElContent.classList.add("todo__content");
 
         const todoElDetailWrapper = document.createElement("div");
-        todoElDetailWrapper.classList.add("todo__detail")
+        todoElDetailWrapper.classList.add("todo__detail");
 
-            const details = document.createElement("details")
+            const details = document.createElement("details");
+            details.classList.add("todo__description");
             details.textContent = todo.description;
 
             const title = document.createElement("summary");
+            title.classList.add("todo__title");
             title.textContent = todo.title;
 
             const due = document.createElement("span");
+            due.classList.add("todo__due");
             due.textContent = todo.dueDate;
 
             details.appendChild(title);
 
-        todoElDetailWrapper.appendChild(details)
-        todoElDetailWrapper.appendChild(due)
+        todoElDetailWrapper.appendChild(details);
+        todoElDetailWrapper.appendChild(due);
 
         const todoElActions = document.createElement("div");
         todoElActions.classList.add("todo__actions");
 
-        todoElActions.appendChild(createDeleteTodoBtn())
-        todoElActions.appendChild(createPriorityTodoBtn())
+        todoElActions.appendChild(createEditTodoBtn());
+        todoElActions.appendChild(createDeleteTodoBtn());
+        todoElActions.appendChild(createPriorityTodoBtn());
 
-    todoElContent.appendChild(todoElDetailWrapper)
+    todoElContent.appendChild(todoElDetailWrapper);
     todoElContent.appendChild(todoElActions);
 
-    return todoElContent
+    return todoElContent;
 }
 
 function createPriorityChoiceList () {
-    const wrapper = document.createElement("div")
-    wrapper.classList.add("priority")
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("priority");
 
-    wrapper.appendChild(createPriorityChoices(0))
-    wrapper.appendChild(createPriorityChoices(1))
-    wrapper.appendChild(createPriorityChoices(2))
-    wrapper.appendChild(createPriorityChoices(3))
+    wrapper.appendChild(createPriorityChoices(0));
+    wrapper.appendChild(createPriorityChoices(1));
+    wrapper.appendChild(createPriorityChoices(2));
+    wrapper.appendChild(createPriorityChoices(3));
 
-    return wrapper
+    return wrapper;
 }
 
 function createPriorityChoices(priority) {
@@ -128,7 +142,7 @@ function createPriorityChoices(priority) {
     `
     button.setAttribute("data-priority", priority);
 
-    return button
+    return button;
 }
 
 function initPriorityChoiceBtn() {
@@ -136,9 +150,72 @@ function initPriorityChoiceBtn() {
 
     if(event.target.tagName === "BUTTON") {
         const getTodo = currentProject.todoList.find((e) => e.id === getTodoEl.getAttribute("id"));
-        getTodo.changePriority(event.target.dataset.priority)
+        getTodo.changePriority(event.target.dataset.priority);
         renderTodoList(currentProject);
     }
+}
+
+function openEditTodo(getTodoElParam) {
+    console.log(getTodoElParam);
+
+    const todoDetail = getTodoElParam.querySelector(".todo__detail");
+    console.log(todoDetail);
+
+    const todoEditDetail = document.createElement("div");
+    todoEditDetail.classList.add("todo__detail-edit");
+
+    todoDetail.appendChild(todoEditDetail)
+
+    const todoTitle = getTodoElParam.querySelector(".todo__title");
+    console.log(todoTitle);
+
+        const inputTitle = document.createElement("input");
+
+    const todoDescription = getTodoElParam.querySelector(".todo__description");
+    console.log(todoDescription)
+
+        const inputDescription = document.createElement("input");
+
+    const todoDue = getTodoElParam.querySelector(".todo__due");
+    console.log(todoDue);
+
+        const inputDue = document.createElement("input");
+
+    try {
+        if (todoTitle.textContent &&
+            todoDescription.textContent &&
+            todoDue.textContent
+        ) { 
+            /**
+             * `todoDescription.textContent`,  somehow includes the `todoTitle.textContent`: 
+             * 
+             *  e.g., `Todo description goes hereTitle`
+             * 
+             *  `innerText` and `outerText` returns the `todoTitle.textContent` instead.
+             * 
+             *  hence the following `innerHTML` approach:
+             */
+            const todoDescriptionText = todoDescription.innerHTML.split("")
+            const findSummaryIndex = todoDescriptionText.indexOf("<");
+            todoDescriptionText.splice(findSummaryIndex);
+
+            const cleanDescriptionText = todoDescriptionText.join("");
+
+            inputTitle.value = todoTitle.textContent;
+            inputDescription.value = cleanDescriptionText;
+            inputDue.value = todoDue.textContent;
+        }
+    } catch(error) {
+        console.warn(error)
+        renderTodoList(currentProject)
+        return;
+    } 
+
+    todoTitle.remove();
+    todoDescription.remove();
+    todoDue.remove();
+
+    todoEditDetail.replaceWith(inputTitle, inputDescription, inputDue);
 }
 
 export function initTodoBtn() {
@@ -155,6 +232,10 @@ export function initTodoBtn() {
                 renderTodoList(currentProject);
             }
 
+            if (actionSelected === "edit-todo") {
+                openEditTodo(getTodoEl);
+            }
+
             if (actionSelected === "delete-todo") {
                 const getTodoIndex = currentProject.todoList.findIndex((e) => e.id === getTodoEl.getAttribute("id"));
                 deleteTodo(getTodoEl, getTodoIndex);
@@ -165,8 +246,8 @@ export function initTodoBtn() {
 
                 if (priorityListToOpen === "closed") {
                     /**
-                     * stores the last open .priority
-                     * returns null if nothing is open
+                     * stores the last open `.priority`
+                     * returns `null` if nothing is open
                      */
                     const openPriority = document.querySelector(".priority");
 
@@ -175,15 +256,15 @@ export function initTodoBtn() {
                         openPriority.remove();
                     }
 
-                    getTodoEl.dataset.prioritylist = "open"
-                    getTodoEl.appendChild(createPriorityChoiceList())
-                    getTodoEl.querySelector(".priority").addEventListener("click", initPriorityChoiceBtn)
+                    getTodoEl.dataset.prioritylist = "open";
+                    getTodoEl.appendChild(createPriorityChoiceList());
+                    getTodoEl.querySelector(".priority").addEventListener("click", initPriorityChoiceBtn);
                 } 
 
                 if (priorityListToOpen === "open") {
-                    getTodoEl.dataset.prioritylist = "closed"
-                    getTodoEl.querySelector(".priority").removeEventListener("click", initPriorityChoiceBtn)
-                    getTodoEl.querySelector(".priority").remove()
+                    getTodoEl.dataset.prioritylist = "closed";
+                    getTodoEl.querySelector(".priority").removeEventListener("click", initPriorityChoiceBtn);
+                    getTodoEl.querySelector(".priority").remove();
                 }
             }
         });
