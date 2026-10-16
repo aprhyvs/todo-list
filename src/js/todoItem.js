@@ -92,6 +92,7 @@ function createTodoElementContent(todo) {
 
         const todoElDetailWrapper = document.createElement("div");
         todoElDetailWrapper.classList.add("todo__detail");
+        todoElDetailWrapper.setAttribute("data-editmode", "closed")
 
             const details = document.createElement("details");
             details.classList.add("todo__description");
@@ -121,6 +122,31 @@ function createTodoElementContent(todo) {
     todoElContent.appendChild(todoElActions);
 
     return todoElContent;
+}
+
+function createTodoDetailEl(todo) {
+        const todoElDetailWrapper = document.createElement("div");
+        todoElDetailWrapper.classList.add("todo__detail");
+        todoElDetailWrapper.setAttribute("data-editmode", "closed")
+
+            const details = document.createElement("details");
+            details.classList.add("todo__description");
+            details.textContent = todo.description;
+
+            const title = document.createElement("summary");
+            title.classList.add("todo__title");
+            title.textContent = todo.title;
+
+            const due = document.createElement("span");
+            due.classList.add("todo__due");
+            due.textContent = todo.dueDate;
+
+            details.appendChild(title);
+
+        todoElDetailWrapper.appendChild(details);
+        todoElDetailWrapper.appendChild(due);
+
+        return todoElDetailWrapper
 }
 
 function createPriorityChoiceList () {
@@ -156,66 +182,58 @@ function initPriorityChoiceBtn() {
 }
 
 function openEditTodo(getTodoElParam) {
-    console.log(getTodoElParam);
-
     const todoDetail = getTodoElParam.querySelector(".todo__detail");
-    console.log(todoDetail);
-
-    const todoEditDetail = document.createElement("div");
-    todoEditDetail.classList.add("todo__detail-edit");
-
-    todoDetail.appendChild(todoEditDetail)
 
     const todoTitle = getTodoElParam.querySelector(".todo__title");
-    console.log(todoTitle);
-
-        const inputTitle = document.createElement("input");
+    const inputTitle = document.createElement("input");
 
     const todoDescription = getTodoElParam.querySelector(".todo__description");
-    console.log(todoDescription)
-
-        const inputDescription = document.createElement("input");
+    const inputDescription = document.createElement("input");
 
     const todoDue = getTodoElParam.querySelector(".todo__due");
-    console.log(todoDue);
+    const inputDue = document.createElement("input");
 
-        const inputDue = document.createElement("input");
+    if (todoDetail.dataset.editmode === "open") {
+        const getTodo = currentProject.todoList.find((e) => e.id === getTodoElParam.getAttribute("id"));
+        todoDetail.replaceWith(createTodoDetailEl(getTodo));
+    }
 
-    try {
-        if (todoTitle.textContent &&
-            todoDescription.textContent &&
-            todoDue.textContent
-        ) { 
-            /**
-             * `todoDescription.textContent`,  somehow includes the `todoTitle.textContent`: 
-             * 
-             *  e.g., `Todo description goes hereTitle`
-             * 
-             *  `innerText` and `outerText` returns the `todoTitle.textContent` instead.
-             * 
-             *  hence the following `innerHTML` approach:
-             */
-            const todoDescriptionText = todoDescription.innerHTML.split("")
-            const findSummaryIndex = todoDescriptionText.indexOf("<");
-            todoDescriptionText.splice(findSummaryIndex);
+    if (todoDetail.dataset.editmode === "closed") { 
+        const openEditDetail = document.querySelector(".todo__detail[data-editmode='open']")
 
-            const cleanDescriptionText = todoDescriptionText.join("");
+        if (openEditDetail) {
+            const getTodo = currentProject.todoList.find((e) => e.id === openEditDetail.closest(".todo").getAttribute("id"));
+            openEditDetail.dataset.editmode = "closed";
 
-            inputTitle.value = todoTitle.textContent;
-            inputDescription.value = cleanDescriptionText;
-            inputDue.value = todoDue.textContent;
+            openEditDetail.replaceWith(createTodoDetailEl(getTodo));
         }
-    } catch(error) {
-        console.warn(error)
-        renderTodoList(currentProject)
-        return;
-    } 
 
-    todoTitle.remove();
-    todoDescription.remove();
-    todoDue.remove();
+        todoDetail.dataset.editmode = "open";
+        /**
+         * `todoDescription.textContent`,  somehow includes the `todoTitle.textContent`: 
+         * 
+         *  e.g., `Todo description goes hereTitle`
+         * 
+         *  `innerText` and `outerText` returns the `todoTitle.textContent` instead.
+         * 
+         *  hence the following `innerHTML` approach:
+         */
+        const todoDescriptionText = todoDescription.innerHTML.split("")
+        const findSummaryIndex = todoDescriptionText.indexOf("<");
+        todoDescriptionText.splice(findSummaryIndex);
 
-    todoEditDetail.replaceWith(inputTitle, inputDescription, inputDue);
+        const cleanDescriptionText = todoDescriptionText.join("");
+
+        inputTitle.value = todoTitle.textContent;
+        inputDescription.value = cleanDescriptionText;
+        inputDue.value = todoDue.textContent;
+
+        todoTitle.remove();
+        todoDescription.remove();
+        todoDue.remove();
+
+        todoDetail.replaceChildren(inputTitle, inputDescription, inputDue);
+    }
 }
 
 export function initTodoBtn() {
